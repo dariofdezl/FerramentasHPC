@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "mkl_lapacke.h"
-#include "mkl.h"
 
 double *generate_matrix(int size)
 {
@@ -91,9 +90,7 @@ double *my_dgesv(double *A, int n, double *B, int nrhs) {
             X[i*n+k]/=U[i*n+i];
         }
      }
-	free(L);
-	free(U);
-	free(Y);    
+    
     return X;
 
 }
@@ -112,6 +109,18 @@ double *my_dgesv(double *A, int n, double *B, int nrhs) {
         b = generate_matrix(size);
         bref = generate_matrix(size);
         
+        /*
+        matrices para o debugeo
+        double m2[] = {4, 12,  10,  10,
+             12, 6,  7,  4,
+             2, 8, 10, 11,
+             7, 10, 6, 12};
+
+        double B[]={166,112,161,173,
+        100,12,18,13,
+        16,11,11,73,
+        66,12,61,17};
+        */
         // Using MKL to solve the system
         MKL_INT n = size, nrhs = size, lda = size, ldb = size, info;
         MKL_INT *ipiv = (MKL_INT *)malloc(sizeof(MKL_INT)*size);
@@ -123,15 +132,9 @@ double *my_dgesv(double *A, int n, double *B, int nrhs) {
         tStart = clock();    
         double *res =my_dgesv(a,n,b,nrhs);
         printf("Time taken by my implementation: %.2fs\n", (double)(clock() - tStart) / CLOCKS_PER_SEC);
-	free(ipiv);
+        
         if (check_result(bref,res,size)==1)
             printf("Result is ok!\n");
         else    
             printf("Result is wrong!\n");
-	free(a);
-	free(aref);
-	free(b);
-	free(bref);
-	free(res);    
-	mkl_free_buffers();
-}
+    }
