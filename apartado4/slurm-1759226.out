@@ -1,0 +1,46 @@
+gcccore/6.4.0 loaded 
+binutils/2.29.1 loaded 
+gcc/6.4.0 loaded 
+numactl/2.0.11 loaded 
+ncurses/6.0 loaded 
+hwloc/1.11.9 loaded 
+openmpi/2.1.1 loaded 
+libunwind/1.2.1 loaded 
+zlib/1.2.11 loaded 
+xz/5.2.3 loaded 
+libxml2/2.9.6 loaded 
+papi/5.5.1 loaded 
+bzip2/1.0.6 loaded 
+libreadline/7.0 loaded 
+tcl/8.6.7 loaded 
+sqlite/3.22.0 loaded 
+expat/2.2.5 loaded 
+libpng/1.6.34 loaded 
+freetype/2.9 loaded 
+fontconfig/2.12.6 loaded 
+x11/20180131 loaded 
+tk/8.6.7 loaded 
+gmp/6.1.2 loaded 
+libffi/3.2.1 loaded 
+openssl/1.1.0g loaded 
+python/2.7.14 loaded 
+boost/1.66.0-python-2.7.14 loaded 
+libelf/0.8.13 loaded 
+libdwarf/20180129 loaded 
+extrae/3.5.2 loaded 
+Result is ok!
+Result is ok!
+Result is ok!
+Result is ok!
+Result is ok!
+Result is ok!
+Result is ok!
+Result is ok!
+Result is ok!
+Result is ok!
+Result is ok!
+Result is ok!
+Result is ok!
+Result is ok!
+Result is ok!
+Result is ok!
