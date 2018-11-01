@@ -1,0 +1,32 @@
+icc/2018.3.222 unloaded 
+ifort/2018.3.222 unloaded 
+intel/2018.3.222 unloaded 
+impi/2018.3.222 unloaded 
+icc/2018.3.222 loaded 
+ifort/2018.3.222 loaded 
+intel/2018.3.222 loaded 
+impi/2018.3.222 loaded 
+impi/2018.3.222 unloaded 
+impi/2018.3.222 loaded 
+mkl/11.3 unloaded 
+mkl/11.3 loaded 
+rm dgesv
+icc -g -p -lmkl -lmkl_core -lmkl_intel_lp64 -lmkl_sequential -xCORE-AVX2 -fopenmp -DREDUCTION -D ALIGNED -DNOALIAS -Ofast -march=native -o dgesv dgesvfree.c
+echo "Small test"
+Small test
+./dgesv 2048
+Time taken by MKL: 0.64s
+Time taken by my implementation: 3.53s
+Result is ok!
+echo "Medium test"
+Medium test
+./dgesv 4092
+Time taken by MKL: 4.95s
+Time taken by my implementation: 36.37s
+Result is ok!
+echo "Large test"
+Large test
+./dgesv 8192
+Time taken by MKL: 38.77s
+Time taken by my implementation: 434.68s
+Result is ok!
