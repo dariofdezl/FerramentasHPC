@@ -1,6 +1,7 @@
 #include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <omp.h>
 
 double *generate_matrix(int size)
 {
@@ -52,6 +53,7 @@ double *my_dgesv(double *A, int n, double *B, int nrhs) {
 
     int i,j,k;
     for (j = 0; j < n; j++){
+        #pragma omp parallel for private(j,k)
         for (i = 0; i <n; i++) {
             if(i<=j){
                 U[i*n+j]=A[i*n+j];
@@ -73,21 +75,34 @@ double *my_dgesv(double *A, int n, double *B, int nrhs) {
         }
     }
  //Conseguidas LU solucionamos o sistema
+//algo do pragma simd vector length
+double sum;
+    #pragma omp parallel private(i,j,k)
+    {
+    #pragma omp for
     for (k=0;k<n;k++){
         for(i=0; i<nrhs; i++){
             Y[i*nrhs+k]=B[i*nrhs+k];
+	    sum=Y[i*n+k];
+	    #pragma omp simd reduction(-:sum)
             for(j=0; j<i; j++)
-                Y[i*n+k]-=L[i*n+j]*Y[j*nrhs+k];
+                sum-=L[i*n+j]*Y[j*nrhs+k];
+	    Y[i*n+k]=sum;
         }
     }
+    #pragma omp for
     for (k=0;k<nrhs;k++){
         for(i=n-1; i>=0; i--){
             X[i * nrhs + k]= Y[i * nrhs + k];
+		sum=X[i*n+k];
+	    #pragma omp simd reduction(-:sum)
+
             for(j=i+1; j<n; j++)
-                X[i*n+k]-=U[i*n+j]*X[j*n+k];
+                sum-=U[i*n+j]*X[j*n+k];
+	    X[i*n+k]=sum;
             X[i*n+k]/=U[i*n+i];
         }
-     
+     }
      }
 	free(L);
 	free(U);
@@ -118,7 +133,10 @@ void main(int argc, char *argv[])
         //printf("Time taken by MKL: %.2fs\n", (double)(clock() - tStart) / CLOCKS_PER_SEC);
 
         double start,end;  
+        start = omp_get_wtime();
         double *res =my_dgesv(a,n,b,nrhs);
+        end = omp_get_wtime();
+        printf("Time taken by my implementation: %.2fs\n", (end - start));
         //free(ipiv);
             if (check_result(res,res,size)==1)
         printf("Result is ok!\n");
