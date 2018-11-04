@@ -2,7 +2,7 @@
 all: dgesv
 
 dgesv: dgesvmeu.c
-	gcc -g -p  -march=native -o dgesv dgesvmeu.c
+	gcc -g -p -fopenmp -o dgesv dgesvmeu.c
 
 run: 
 	echo "Small test"
